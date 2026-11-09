@@ -14,7 +14,7 @@ import {
   writeSync,
 } from "node:fs";
 import { basename, dirname, isAbsolute, relative, resolve, sep } from "node:path";
-import { stripBom } from "./bom.js";
+import { readSubtitleText, stripBom } from "./bom.js";
 import {
   addKeyframes,
   addTransition,
@@ -462,6 +462,8 @@ function validateOperationPayload(op: Record<string, unknown>, where: string): v
   if (op.op === "text-style" && op.style && typeof op.style === "object" && !Array.isArray(op.style)) {
     const style = op.style as Record<string, unknown>;
     for (const key of [
+      "fontSize",
+      "alignment",
       "alpha",
       "fixedWidth",
       "fixedHeight",
@@ -490,7 +492,7 @@ function validateOperationPayload(op: Record<string, unknown>, where: string): v
       if (style[key] !== undefined && typeof style[key] !== "boolean")
         throw new Error(`compile: ${where}.style.${key} must be a boolean`);
     }
-    for (const key of ["shadowColor", "borderColor", "bgColor"]) {
+    for (const key of ["color", "shadowColor", "borderColor", "bgColor"]) {
       if (style[key] !== undefined) validateColor(style[key], `${where}.style.${key}`);
     }
   }
@@ -1106,7 +1108,7 @@ function populateDraft(
           break;
         }
         case "captions": {
-          const cues = parseSrt(stripBom(readFileSync(resolvePath(operation.path, specDir), "utf-8")));
+          const cues = parseSrt(readSubtitleText(resolvePath(operation.path, specDir)));
           if (cues.length === 0) throw new Error("captions file contains no cues");
           const offset = Math.round((operation.timeOffset ?? 0) * US);
           for (const cue of cues) {

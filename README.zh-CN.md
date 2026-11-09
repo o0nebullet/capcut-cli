@@ -18,9 +18,9 @@
 
 `原始录音` → `静音感知剪辑 + 样式化字幕` → `可编辑的 CapCut / 剪映草稿`
 
-**▶ 带字幕的成片示例（60 秒）**
+**▶ 带字幕的成片示例（35 秒）**
 
-https://github.com/user-attachments/assets/4e6ee99c-0745-4cfb-8e9b-ad873fb1259b
+https://github.com/user-attachments/assets/ba6d4f4c-626b-4d09-bcf2-d32471c427be
 
 ## 安装并打开你的第一个可编辑草稿
 
@@ -82,9 +82,10 @@ Claude Code 也可以把它作为插件加载：
 
 ## 发布说明
 
+> **v0.33.0 更新：** `caption` 会报告字幕未覆盖的语音，并在只改样式时复用缓存的转写结果；`loudness --tolerance` 和 `--max-true-peak` 以退出码把关交付响度；`lint` 新增可选的节奏与静音段检查；`diff --since-write` 显示 CapCut 在 CLI 上次写入后改动了什么；`fixture --anonymize` 生成可分享的匿名包；`render --burn-captions` 使用草稿自身的字体绘制字幕。完整说明见[更新日志](./CHANGELOG.md)。
+
 > **v0.31.0 新增：** 实验性、非官方的 `caption --cloud`：无需本地 Whisper，将音频上传到字节跳动的 CapCut 服务器转写（[#157](https://github.com/renezander030/capcut-cli/pull/157)），dry run 中不上传任何内容，请求失败会自动重试，等待时间随音频长度增加；按发布平台的响度目标调整音量（`loudness --target -14`，写入片段音量，可撤销）；同一素材的重复剪辑复用内容哈希，编译更快；新增三项 `lint` 检查：复制后无声的片段、裁剪或变速片段上的关键帧，以及剪映 11.6 及以上版本中的 `UNIFORM_SCALE` 缩放。完整说明见[更新日志](./CHANGELOG.md)。
 
-> **v0.30.0 新增：** 每条命令单独的帮助（`capcut <命令> --help`、`capcut help <命令>`）；应用保存后撤销依然可靠，每次恢复前都会对照写入日志校验（`restore`，`restore --list` 显示完整性）；whisper.cpp 的真实逐词时间戳用于卡拉 OK 与逐词显现字幕，也可通过 `caption --words` 读取。完整说明见[更新日志](./CHANGELOG.md)。
 
 
 
